@@ -27,24 +27,13 @@ class Solution {
             res.add(t);
             return;
         }
-        int availablePositions = ((1 << n) - 1) & (~(col1 | di1 | di2));
-        while (availablePositions != 0) {
-            int position = availablePositions & (-availablePositions);
-            availablePositions = availablePositions & (availablePositions - 1);
-            int col = Integer.bitCount(position - 1);
+        int ap = ((1 << n) - 1) & (~(col1 | di1 | di2));
+        while (ap != 0) {
+            int pos = ap & (-ap);
+            ap = ap & (ap - 1);
+            int col = Integer.bitCount(pos - 1);
             columns[row] = col;
-            dfs(n, row + 1, col1 | position, (di1 | position) << 1, (di2 | position) >> 1);
-        }
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        List<List<String>> result = solution.solveNQueens(4);
-        for (List<String> solutionBoard : result) {
-            for (String row : solutionBoard) {
-                System.out.println(row);
-            }
-            System.out.println();
+            dfs(n, row + 1, col1 | pos, (di1 | pos) << 1, (di2 | pos) >> 1);
         }
     }
 }
