@@ -1,12 +1,12 @@
 class Solution {
-    public int maxDistance(List<List<Integer>> arr) {
-        int mi = arr.get(0).get(0);
-        int ma = arr.get(0).get(arr.get(0).size()-1);
+    public int maxDistance(List<List<Integer>> arrays) {
+        int mi = arrays.get(0).get(0);
+        int ma = arrays.get(0).get(arrays.get(0).size()-1);
         int res = 0;
         int n1 = mi; int n2 = mi;
 
-        for(int i = 1 ; i < arr.size(); i++) {
-            List<Integer> arr = arr.get(i);
+        for(int i = 1 ; i < arrays.size(); i++) {
+            List<Integer> arr = arrays.get(i);
             int length = arr.size();
             n1 = arr.get(0);
             n2 = arr.get(length-1);
