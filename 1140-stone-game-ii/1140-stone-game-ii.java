@@ -1,5 +1,5 @@
 class Solution {
-      private int getMaxStones(int[] piles,int[] ss,int[][] dp,int i,int M)
+      private int ma(int[] piles,int[] ss,int[][] dp,int i,int M)
     {
         int n=piles.length;
         if(i==n) return 0;
@@ -7,8 +7,8 @@ class Solution {
         if(dp[i][M]>0) return dp[i][M];
         
         int mb=Integer.MAX_VALUE;
-        for(int X=1;X<=2*M;X++){
-             mb=Math.min(mb,getMaxStones(piles,ss,dp,i+X,Math.max(M,X)));
+        for(int j=1;j<=2*M;j++){
+             mb=Math.min(mb,ma(piles,ss,dp,i+j,Math.max(M,j)));
         }
         dp[i][M]=ss[i]-mb;
         return dp[i][M];
@@ -23,7 +23,7 @@ class Solution {
             ss[i]=ss[i+1]+piles[i];
         }
         int[][] dp=new int[n][n+1];
-        return getMaxStones(piles,ss,dp,0,1);
+        return ma(piles,ss,dp,0,1);
 
     }
   
