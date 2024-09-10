@@ -1,6 +1,5 @@
 class Solution {
-    public boolean helper(char[][]board,int m,int n)
-    {
+    public boolean helper(char[][]board,int m,int n){
         Set<Character> ch=new HashSet<>();
         for(int i=m;i<m+3;i++){
             for(int j=n;j<n+3;j++){
