@@ -1,13 +1,13 @@
 class Solution {
-    public int maxProfit(int[] prices) {
-        if(prices == null || prices.length < 1) return 0;
-        int buy1 = -prices[0], sell1 = 0, buy2 = -prices[0], sell2 = 0;
-        for(int i = 1; i < prices.length; i++) {
-            buy1 = Math.max(buy1, -prices[i]);
-            sell1 = Math.max(sell1, buy1 + prices[i]);
-            buy2 = Math.max(buy2, sell1 - prices[i]);
-            sell2 = Math.max(sell2, buy2 + prices[i]);
+    public int maxProfit(int[] pri) {
+        if(pri == null || pri.length < 1) return 0;
+        int b1 = -pri[0], s1 = 0, b2 = -pri[0], s2 = 0;
+        for(int i = 1; i < pri.length; i++) {
+            b1 = Math.max(b1, -pri[i]);
+            s1 = Math.max(s1, b1 + pri[i]);
+            b2 = Math.max(b2, s1 - pri[i]);
+            s2 = Math.max(s2, b2 + pri[i]);
         }
-        return sell2;
+        return s2;
     }
 }
