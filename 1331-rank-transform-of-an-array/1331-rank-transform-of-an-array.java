@@ -6,9 +6,8 @@ class Solution {
         int rank = 1;
 
         for (int num : sor) {
-            if (!rm.containsKey(num)) {
-                rm.put(num, rank++);
-            }
+            if (!rm.containsKey(num)) rm.put(num, rank++);
+            
         }
         for (int i = 0; i < arr.length; i++) {
             arr[i] = rm.get(arr[i]);
