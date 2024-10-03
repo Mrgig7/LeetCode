@@ -18,6 +18,6 @@ class Solution {
                 l = Math.min(l, i - map.get((mod + p - s) % p));
         }
 
-        return l == n ? 0 : l;
+        return l == n ? -1 : l;
     }
 }
