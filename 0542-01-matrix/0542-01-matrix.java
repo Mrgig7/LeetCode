@@ -1,31 +1,37 @@
-public class Solution {
-    public int[][] updateMatrix(int[][] mat) {
-       int m = mat.length;
-       int n = mat[0].length;
-         int[][] res = new int[m][n];
-            Queue<int[]> q = new LinkedList<>();
-            for(int i=0; i<m; i++){
-                for(int j=0; j<n; j++){
-                    if(mat[i][j] == 0){
-                        q.add(new int[]{i,j});
-                    }else{
-                        res[i][j] = Integer.MAX_VALUE;
-                    }
-                }
-            }
-            int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
-            while(!q.isEmpty()){
-                int[] curr = q.poll();
-                for(int[] dir : dirs){
-                    int r = curr[0] + dir[0];
-                    int c = curr[1] + dir[1];
-                    if(r >=0 && r < m && c >= 0 && c < n && res[r][c] > res[curr[0]][curr[1]] + 1){
-                        res[r][c] = res[curr[0]][curr[1]] + 1;
-                        q.add(new int[]{r,c});
-                    }
-                }
-            }
-            return res;
-    
+class Solution {
+    public int[][] updateMatrix(int[][] matrix) {
+        int rowLast = matrix.length - 1;
+        int colLast = matrix[0].length - 1;
+
+        int[] row = matrix[0];
+        int[] prevRow;
+        if (row[0] == 1)
+            row[0] = rowLast + colLast + 2;
+        for (int c = 1; c <= colLast; c++)
+            if (row[c] == 1)
+                row[c] = row[c - 1] + 1;
+        for (int r = 1; r <= rowLast; r++) {
+            prevRow = row;
+            row = matrix[r];
+            if (row[0] == 1)
+                row[0] = prevRow[0] + 1;
+            for (int c = 1; c <= colLast; c++)
+                if (row[c] == 1)
+                    row[c] = Math.min(row[c - 1], prevRow[c]) + 1;
+        }
+        row = matrix[rowLast];
+        for (int c = colLast - 1; c >= 0; c--)
+            if (row[c] > 1)
+                row[c] = Math.min(row[c], row[c + 1] + 1);
+        for (int r = rowLast - 1; r >= 0; r--) {
+            prevRow = row;
+            row = matrix[r];
+            if (row[colLast] > 1)
+                row[colLast] = Math.min(row[colLast], prevRow[colLast] + 1);
+            for (int c = colLast - 1; c >= 0; c--)
+                if (row[c] > 1)
+                    row[c] = Math.min(row[c], Math.min(row[c + 1], prevRow[c]) + 1);
+        }
+        return matrix;
     }
 }
