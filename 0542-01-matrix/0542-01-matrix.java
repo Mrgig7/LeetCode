@@ -1,5 +1,3 @@
-import java.util.*;
-//nearest distance to 0 in a matrix
 public class Solution {
     public int[][] updateMatrix(int[][] mat) {
        int m = mat.length;
