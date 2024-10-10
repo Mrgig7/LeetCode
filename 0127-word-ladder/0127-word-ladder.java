@@ -1,33 +1,45 @@
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Set<String> set = new HashSet<>(wordList);
-        if (!set.contains(endWord))
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (!wordSet.contains(endWord)) {
             return 0;
-        Queue<String> q = new LinkedList<>();
-        q.add(beginWord);
-        int lvl = 1;
-        while (!q.isEmpty()) {
-            int n = q.size();
-            for (int i = 0; i < n; i++) {
-                char[] cur = q.poll().toCharArray();
-                for (int j = 0; j < cur.length; j++) {
-                    char temp = cur[j];
+        }
+
+        Set<String> currWords = new HashSet<>(), targetWords = new HashSet<>();
+        currWords.add(beginWord);
+        targetWords.add(endWord);
+
+        int steps = 1;
+        while(!currWords.isEmpty()) {
+            Set<String> newWords = new HashSet<>();
+            for (String oldWord: currWords) {
+                for (int i = 0; i < oldWord.length(); i++) {
+                    char[] baseWord = oldWord.toCharArray();
                     for (char c = 'a'; c <= 'z'; c++) {
-                        cur[j] = c;
-                        String next = new String(cur);
-                        if (set.contains(next)) {
-                            if (next.equals(endWord))
-                                return lvl + 1;
-                            q.add(next);
-                            set.remove(next);
+                        baseWord[i] = c;
+                        String newWord = String.valueOf(baseWord);
+                        if (targetWords.contains(newWord)) {
+                            return steps + 1;
+                        }
+
+                        if (wordSet.contains(newWord)) {
+                            newWords.add(newWord);
+                            wordSet.remove(newWord);
                         }
                     }
-                    cur[j] = temp;
                 }
             }
-            lvl++;
+
+            if (newWords.size() < targetWords.size()) {
+                currWords = newWords;
+            }
+            else {
+                currWords = targetWords;
+                targetWords = newWords;
+            }
+            steps++;
+            System.out.println(steps);
         }
         return 0;
-
     }
 }
