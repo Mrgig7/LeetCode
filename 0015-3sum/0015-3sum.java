@@ -17,9 +17,9 @@ class Solution {
                     j++;
                     k--;
                 }else if(s>0){
-                    j++;
-                }else{
                     k--;
+                }else{
+                    j++;
                 }
             }
         }
