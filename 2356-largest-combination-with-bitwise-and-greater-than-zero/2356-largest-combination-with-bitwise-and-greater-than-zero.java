@@ -1,19 +1,23 @@
+
 class Solution {
     public int largestCombination(int[] candidates) {
-       int[] ans=new int[32];
-       for(int x:candidates) find(x,ans);
-       int res=0;
-       for(int i=0;i<24;i++) res=Math.max(res,ans[i]);
-       return res;
-    }
-    public void find(int n,int[] ans){
+        int[] bitCount = new int[32]; // Array to count the number of candidates with each bit set
 
-        int j=23;
-        while(n>0){
-            int a=(n&1);
-            ans[j]+=a;
-            n>>=1;
-            j--;
+        // Count the number of candidates with each bit set
+        for (int candidate : candidates) {
+            for (int bit = 0; bit < 32; bit++) {
+                if ((candidate & (1 << bit)) != 0) {
+                    bitCount[bit]++;
+                }
+            }
         }
+
+        // Find the maximum count across all bit positions
+        int maxCount = 0;
+        for (int count : bitCount) {
+            maxCount = Math.max(maxCount, count);
+        }
+
+        return maxCount;
     }
 }
