@@ -1,31 +1,63 @@
-class Solution {
-    public long findScore(int[] n) {
-        int len = n.length;
-        int[][] dp = new int[len][2];
+public class Solution {
+    public long findScore(int[] nums) {
+        int n = nums.length;
+        TreeMap<Pair, Boolean> map = new TreeMap<>((a, b) -> {
+            if (a.first != b.first) {
+                return Integer.compare(a.first, b.first);
+            }
+            return Integer.compare(a.second, b.second);
+        });
 
-        for (int i = 0; i < len; i++) {
-            dp[i][0] = n[i];
-            dp[i][1] = i;
+        for (int i = 0; i < n; i++) {
+            map.put(new Pair(nums[i], i), true);
         }
 
-        Arrays.sort(dp, (a, b) -> a[0] - b[0]);
+        long ans = 0;
 
-        boolean[] m = new boolean[len];
-        long res = 0;
+        for (Map.Entry<Pair, Boolean> entry : map.entrySet()) {
+            Pair pair = entry.getKey();
+            int index = pair.second;
+            if (entry.getValue()) {
+                ans += pair.first;
+                entry.setValue(false);
 
-        for (int[] arr : dp) {
-            int val = arr[0];
-            int ind = arr[1];
-
-            if (!m[ind]) {
-                res += val;
-
-                m[ind] = true;
-                if (ind > 0) m[ind - 1] = true;
-                if (ind < len - 1) m[ind + 1] = true;
+                if (index - 1 >= 0) {
+                    Pair prev = new Pair(nums[index - 1], index - 1);
+                    if (map.containsKey(prev) && map.get(prev)) {
+                        map.put(prev, false);
+                    }
+                }
+                if (index + 1 < n) {
+                    Pair next = new Pair(nums[index + 1], index + 1);
+                    if (map.containsKey(next) && map.get(next)) {
+                        map.put(next, false);
+                    }
+                }
             }
         }
 
-        return res;
+        return ans;
+    }
+
+    static class Pair {
+        int first, second;
+
+        Pair(int first, int second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Pair pair = (Pair) o;
+            return first == pair.first && second == pair.second;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(first, second);
+        }
     }
 }
