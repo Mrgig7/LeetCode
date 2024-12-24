@@ -14,56 +14,50 @@
  * }
  */
 class Solution {
-    public int minimumOperations(TreeNode root) {
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-
-        int minSwap = 0;
-
-        while(!q.isEmpty()){
-            TreeNode curr = q.peek();
-            int size = q.size();
-
-            for(int i = 0; i < size; i++){
-    
-                curr = q.remove();
-
-                if(curr.left != null)q.add(curr.left);
-                if(curr.right != null)q.add(curr.right);
-            }
-
-            int arr[] = new int[q.size()];
-            int k = 0;
-            for(TreeNode num : q){
-                arr[k++] = num.val;
-            }
-            minSwap = minSwap + LevelOrderSwaps(arr,k);
-        }
-        return minSwap;
-    }
-    int LevelOrderSwaps(int arr[] , int n){
-        int temp[] = Arrays.copyOfRange(arr, 0 , n);
-        int ans = 0;
+    private int minSwaps(int[] arr) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int[] temp = arr.clone();
         Arrays.sort(temp);
 
-        for(int i = 0; i<n; i++){
-            if(arr[i] != temp[i]){
-                ans++;
-                int x = findIndex(arr, temp[i]);
-                int tmp = arr[i];
-                arr[i] = arr[x];
-                arr[x] = tmp;
+        for (int i = 0; i < arr.length; i++) {
+            map.put(temp[i], i);
+        }
 
+        int ans = 0;
+        for (int i = 0; i < arr.length;) {
+            int ind = map.get(arr[i]);
+            if (ind == i) {
+                i++;
+            } else {
+                int tmp = arr[i];
+                arr[i] = arr[ind];
+                arr[ind] = tmp;
+                ans++;
             }
         }
         return ans;
     }
-    int findIndex(int arr[] , int x){
-        for(int i = 0; i<arr.length; i++){
-            if(arr[i] == x){
-                return i;
+
+    public int minimumOperations(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        int ans = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> temp = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                temp.add(node.val);
+                if (node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
             }
+
+            int[] arr = temp.stream().mapToInt(Integer::intValue).toArray();
+            ans += minSwaps(arr);
         }
-        return -1;
+
+        return ans;
     }
 }
